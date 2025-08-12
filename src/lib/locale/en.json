@@ -1,0 +1,209 @@
+{
+  "app": {
+    "name": "MAG",
+    "description": "Modern Application Gateway",
+    "welcome": "Hi"
+  },
+  "optional": "Optional",
+  "auth": {
+    "welcome": "Welcome to MAG",
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "form": {
+      "register": {
+        "username": "Username"
+      },
+      "business": {
+        "companyName": "Company Name",
+        "city": "City",
+        "state": "State",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "houseNumber": "House Number",
+        "street": "Street",
+        "nipNumber": {
+          "label": "NIP Number",
+          "description": "Tax Identification Number (NIP) is a 10-digit number used to identify taxpayers in Poland"
+        },
+        "submit": "Submit",
+        "success": "Business information successfully saved",
+        "error": "Failed to save business information"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "lastOrders": "Last Orders",
+    "shortcuts": "Shortcuts",
+    "orders": "Orders",
+    "invoices": "Invoices",
+    "income": "Income"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "allegro": {
+      "description": "Connect your Allegro account to manage orders and inventory directly from your dashboard"
+    },
+    "fakturowo": {
+      "description": "Integrate with Fakturowo to automate your invoicing and accounting processes"
+    }
+  },
+
+  "orders": {
+    "title": "Orders",
+    "description": "Manage and track all your orders",
+    "id": "ID",
+    "deliveryMethod": "Delivery Method",
+    "totalToPay": "Total To Pay",
+    "lastUpdate": "Last Update",
+    "source": "Source",
+    "search": "Search by number",
+    "details": {
+      "title": "Order Details",
+      "description": "View detailed information about the order including status, items, and delivery details"
+    }
+  },
+  "offers": {
+    "title": "Offers",
+    "description": "Manage and track all your product listings",
+    "search": "Search by name",
+    "name": "Name",
+    "price": "Price",
+    "status": "Status",
+    "watchers": "Watchers",
+    "visits": "Visits",
+    "stock": "Stock",
+    "soldUnits": "Sold Units",
+    "details": {
+      "title": "Offer Details",
+      "description": "View detailed information about the offer including status, stats, and pricing details"
+    }
+  },
+  "invoices": {
+    "title": "Invoices",
+    "description": "View and manage all your invoices in one place"
+  },
+  "automations": {
+    "title": "Automations",
+    "description": "Create and manage automated workflows to streamline your business processes",
+    "manage": "Manage",
+    "create": "Create new Automation",
+    "form": {
+      "title": "Create new automation",
+      "description": "Configure automated actions to streamline your business operations",
+      "success": "Successfully created automation",
+      "error": "Failed to create automation",
+      "submit": "Create Automation",
+      "action": {
+        "label": "Action",
+        "placeholder": "Select an action",
+        "error": "Please select an action",
+        "description": "Choose the automation action you want to perform"
+      },
+      "integration": {
+        "label": "Integration",
+        "placeholder": "Select an integration",
+        "error": "Please select an integration",
+        "description": "Choose the integration you want to automate"
+      }
+    }
+  },
+  "products": {
+    "title": "Products",
+    "description": "Manage and track all your products",
+    "search": "Search by name",
+    "name": "Name",
+    "price": "Price",
+    "status": "Status",
+    "watchers": "Watchers",
+    "visits": "Visits",
+    "stock": "Stock",
+    "soldUnits": "Sold Units",
+    "lastCost": "Last Cost",
+    "lastPrice": "Last Price",
+    "avgPrice": "Avg. Price",
+    "avgCost": "Avg. Cost",
+    "image": "Image",
+    "details": {
+      "title": "Product Details",
+      "description": "View detailed information about the product including status, stats, and pricing details"
+    }
+  },
+  "costHistory": {
+    "form": {
+      "title": "Create Cost History",
+      "description": "Add a new cost history entry for the product",
+      "success": "Successfully created cost history",
+      "error": "Failed to create cost history",
+      "submit": "Create Cost History",
+      "ean": {
+        "label": "EAN",
+        "placeholder": "Enter EAN",
+        "error": "EAN is required"
+      },
+      "name": {
+        "label": "Name",
+        "placeholder": "Enter cost name",
+        "description": "Enter where you purchased the item or any special occasion details",
+        "error": "Name is required"
+      },
+      "quantity": {
+        "label": "Quantity",
+        "placeholder": "Enter quantity",
+        "error": "Quantity is required and must be positive"
+      },
+      "unitCost": {
+        "label": "Unit Cost",
+        "placeholder": "Enter unit cost",
+        "error": "Unit cost is required"
+      },
+      "unitPrice": {
+        "label": "Unit Price",
+        "placeholder": "Enter unit price",
+        "error": "Unit price is required"
+      },
+      "currency": {
+        "label": "Currency",
+        "placeholder": "Select currency",
+        "error": "Currency is required"
+      },
+      "purchasedAt": {
+        "label": "Purchase Date",
+        "placeholder": "Select purchase date",
+        "error": "Purchase date is required"
+      }
+    }
+  },
+  "currencies": {
+    "pln": "Polish Złoty",
+    "eur": "Euro",
+    "usd": "US Dollar",
+    "gbp": "British Pound",
+    "chf": "Swiss Franc",
+    "jpy": "Japanese Yen",
+    "cad": "Canadian Dollar",
+    "aud": "Australian Dollar",
+    "cny": "Chinese Yuan",
+    "czk": "Czech Koruna",
+    "huf": "Hungarian Forint"
+  },
+
+  "userButton": {
+    "analytics": "Analytics",
+    "tools": {
+      "label": "Tools",
+      "syncErli": "Sync products from erli",
+      "syncAllegro": "Sync products from allegro"
+    },
+    "license": "License",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "settings": "Settings",
+    "billing": "Billing",
+    "signOut": "Sign Out",
+    "help": "Help",
+    "contact": "Contact"
+  }
+}

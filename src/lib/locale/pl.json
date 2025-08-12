@@ -1,0 +1,200 @@
+{
+  "app": {
+    "name": "MAG",
+    "description": "Nowoczesna Brama Aplikacyjna",
+    "welcome": "Cześć"
+  },
+  "optional": "Opcjonalne",
+  "auth": {
+    "welcome": "Witaj w MAG",
+    "login": "Zaloguj się",
+    "signup": "Zarejestruj się",
+    "email": "Email",
+    "password": "Hasło",
+    "form": {
+      "register": {
+        "username": "Nazwa użytkownika"
+      },
+      "business": {
+        "companyName": "Nazwa firmy",
+        "city": "Miasto",
+        "state": "Województwo",
+        "postalCode": "Kod pocztowy",
+        "country": "Kraj",
+        "houseNumber": "Numer domu",
+        "street": "Ulica",
+        "nipNumber": {
+          "label": "Numer NIP",
+          "description": "Numer Identyfikacji Podatkowej (NIP) to 10-cyfrowy numer używany do identyfikacji podatników w Polsce"
+        },
+        "submit": "Wyślij",
+        "success": "Informacje o firmie zostały pomyślnie zapisane",
+        "error": "Nie udało się zapisać informacji o firmie"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panel główny",
+    "lastOrders": "Ostatnie Zamówienia",
+    "shortcuts": "Skróty",
+    "orders": "Zamówienia",
+    "invoices": "Faktury",
+    "income": "Przychód"
+  },
+  "integrations": {
+    "title": "Integracje",
+    "allegro": {
+      "description": "Połącz swoje konto Allegro, aby zarządzać zamówieniami i zapasami bezpośrednio z panelu"
+    },
+    "fakturowo": {
+      "description": "Zintegruj się z Fakturowo, aby zautomatyzować procesy fakturowania i księgowości"
+    }
+  },
+  "invoices": {
+    "title": "Faktury",
+    "description": "Przeglądaj i zarządzaj wszystkimi swoimi fakturami w jednym miejscu"
+  },
+  "automations": {
+    "title": "Automatyzacje",
+    "description": "Twórz i zarządzaj zautomatyzowanymi przepływami pracy, aby usprawnić procesy biznesowe",
+    "manage": "Zarządzaj",
+    "create": "Dodaj nową automatyzację",
+    "form": {
+      "title": "Utwórz nową automatyzację",
+      "description": "Skonfiguruj zautomatyzowane akcje, aby usprawnić operacje biznesowe",
+      "success": "Automatyzacja została pomyślnie utworzona",
+      "error": "Nie udało się utworzyć automatyzacji",
+      "submit": "Utwórz automatyzację",
+      "action": {
+        "label": "Akcja",
+        "placeholder": "Wybierz akcję",
+        "error": "Wybierz akcję",
+        "description": "Wybierz akcję automatyzacji, którą chcesz wykonać"
+      },
+      "integration": {
+        "label": "Integracja",
+        "placeholder": "Wybierz integrację",
+        "error": "Wybierz integrację",
+        "description": "Wybierz integrację, którą chcesz zautomatyzować"
+      }
+    }
+  },
+  "orders": {
+    "title": "Zamówienia",
+    "description": "Zarządzaj i śledź wszystkie swoje zamówienia",
+    "id": "ID",
+    "deliveryMethod": "Metoda dostawy",
+    "totalToPay": "Do zapłaty",
+    "lastUpdate": "Ostatnia aktualizacja",
+    "search": "Szukaj po numerze",
+    "source": "Źródło",
+    "details": {
+      "title": "Szczegóły zamówienia",
+      "description": "Zobacz szczegółowe informacje o zamówieniu, w tym status, przedmioty i szczegóły dostawy"
+    }
+  },
+  "offers": {
+    "title": "Oferty",
+    "description": "Zarządzaj i śledź wszystkie swoje listy produktów",
+    "search": "Szukaj po nazwie",
+    "name": "Nazwa",
+    "price": "Cena",
+    "status": "Status",
+    "watchers": "Obserwujący",
+    "visits": "Odwiedziny",
+    "stock": "Stan magazynowy",
+    "soldUnits": "Sprzedane sztuki",
+    "details": {
+      "title": "Szczegóły oferty",
+      "description": "Zobacz szczegółowe informacje o ofercie, w tym status, statystyki i szczegóły cenowe"
+    }
+  },
+  "userButton": {
+    "license": "Licencja",
+    "darkMode": "Tryb ciemny",
+    "language": "Język",
+    "settings": "Ustawienia",
+    "billing": "Płatności",
+    "signOut": "Wyloguj się",
+    "help": "Pomoc",
+    "contact": "Kontakt"
+  },
+  "products": {
+    "title": "Produkty",
+    "description": "Zarządzaj i śledź wszystkie swoje produkty",
+    "search": "Szukaj po nazwie",
+    "name": "Nazwa",
+    "price": "Cena",
+    "status": "Status",
+    "watchers": "Obserwujący",
+    "visits": "Odwiedziny",
+    "stock": "Stan magazynowy",
+    "soldUnits": "Sprzedane sztuki",
+    "lastCost": "Ostatni koszt",
+    "lastPrice": "Ostatnia cena",
+    "avgPrice": "Śr. cena",
+    "avgCost": "Śr. koszt",
+    "image": "Obraz",
+    "details": {
+      "title": "Szczegóły produktu",
+      "description": "Zobacz szczegółowe informacje o produkcie, w tym status, statystyki i szczegóły cenowe"
+    }
+  },
+  "costHistory": {
+    "form": {
+      "title": "Utwórz historię kosztów",
+      "description": "Dodaj nowy wpis historii kosztów dla produktu",
+      "success": "Historia kosztów została pomyślnie utworzona",
+      "error": "Nie udało się utworzyć historii kosztów",
+      "submit": "Utwórz historię kosztów",
+      "ean": {
+        "label": "EAN",
+        "placeholder": "Wprowadź EAN",
+        "error": "EAN jest wymagany"
+      },
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Wprowadź nazwę produktu",
+        "error": "Nazwa jest wymagana"
+      },
+      "quantity": {
+        "label": "Ilość",
+        "placeholder": "Wprowadź ilość",
+        "error": "Ilość jest wymagana i musi być dodatnia"
+      },
+      "unitCost": {
+        "label": "Koszt jednostkowy",
+        "placeholder": "Wprowadź koszt jednostkowy",
+        "error": "Koszt jednostkowy jest wymagany"
+      },
+      "unitPrice": {
+        "label": "Cena jednostkowa",
+        "placeholder": "Wprowadź cenę jednostkową",
+        "error": "Cena jednostkowa jest wymagana"
+      },
+      "currency": {
+        "label": "Waluta",
+        "placeholder": "Wybierz walutę",
+        "error": "Waluta jest wymagana"
+      },
+      "purchasedAt": {
+        "label": "Data zakupu",
+        "placeholder": "Wybierz datę zakupu",
+        "error": "Data zakupu jest wymagana"
+      }
+    }
+  },
+  "currencies": {
+    "pln": "Złoty polski",
+    "eur": "Euro",
+    "usd": "Dolar amerykański",
+    "gbp": "Funt brytyjski",
+    "chf": "Frank szwajcarski",
+    "jpy": "Jen japoński",
+    "cad": "Dolar kanadyjski",
+    "aud": "Dolar australijski",
+    "cny": "Juan chiński",
+    "czk": "Korona czeska",
+    "huf": "Forint węgierski"
+  }
+}
