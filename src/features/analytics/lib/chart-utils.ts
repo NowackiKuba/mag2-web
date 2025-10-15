@@ -1,7 +1,12 @@
 import { Order } from '@/lib/types/api';
 
-export const formatOrdersAnalytics = (orders: Order[]) => {
-  const data = [];
+type OrdersAnalyticsPoint = {
+  date: Date;
+  orders: Order[];
+};
+
+export const formatOrdersAnalytics = (orders: Order[]): OrdersAnalyticsPoint[] => {
+  const data: OrdersAnalyticsPoint[] = [];
 
   for (let i = 0; i < 12; i++) {
     const filteredOrders = orders.filter((order) => new Date(order.updatedAt).getMonth() === i);
@@ -10,4 +15,6 @@ export const formatOrdersAnalytics = (orders: Order[]) => {
       orders: filteredOrders,
     });
   }
+
+  return data;
 };

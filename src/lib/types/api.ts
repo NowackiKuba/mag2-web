@@ -175,7 +175,7 @@ interface Address {
   };
 }
 
-interface Buyer {
+export interface Buyer {
   id: string;
   email: string;
   login: string;
@@ -187,7 +187,7 @@ interface Buyer {
   address: Address;
 }
 
-interface Payment {
+export interface Payment {
   id: string;
   type: string;
   provider: string;
@@ -220,7 +220,7 @@ interface DeliveryTime {
   };
 }
 
-interface Delivery {
+export interface Delivery {
   address: Address;
   method: DeliveryMethod;
   pickupPoint?: PickupPoint;
@@ -275,7 +275,7 @@ export interface Item {
 //   id: string;
 // }
 
-interface Summary {
+export interface Summary {
   totalToPay: Amount;
 }
 export interface OrderItem {
@@ -295,6 +295,7 @@ export interface Order {
   paymentId: string;
   paymentDate: Date;
   freeDelivery: boolean;
+  source: ProductSource;
   delivery: {
     isFree: boolean;
     total: number;
@@ -302,6 +303,7 @@ export interface Order {
   };
   totalAmount: number;
   currency: string;
+  updatedAt: Date;
   invoice: boolean;
   invoiceData?: {
     firstName: string;

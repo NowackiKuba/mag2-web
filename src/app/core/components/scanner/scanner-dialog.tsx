@@ -29,7 +29,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     );
   };
 
-  const { mutateAsync: sync, isPending } = useSyncProducts({
+  const { mutateAsync: sync } = useSyncProducts({
     opts: {
       override_onSuccess: () => {
         toast.success('Successfully synced products');
