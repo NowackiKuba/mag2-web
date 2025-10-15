@@ -10,8 +10,8 @@ RUN corepack enable && corepack prepare pnpm@8.10.2 --activate
 # Copy package.json and pnpm lockfile
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies with pnpm (honor lockfile)
-RUN pnpm install --frozen-lockfile
+# Install dependencies with pnpm (allow lockfile refresh)
+RUN pnpm install --no-frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
