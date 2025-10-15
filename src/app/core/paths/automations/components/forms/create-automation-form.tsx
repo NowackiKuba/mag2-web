@@ -17,6 +17,9 @@ import { toast } from 'sonner';
 const CreateAutomationForm = ({ close }: { close: () => void }) => {
   const form = useForm<CreateAutomationInput>({
     resolver: zodResolver(createAutomationSchema),
+    defaultValues: {
+      metadata: {},
+    },
   });
   const { mutate: create, isPending } = useCreateAutomation({
     opts: {
