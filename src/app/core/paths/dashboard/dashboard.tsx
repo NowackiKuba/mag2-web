@@ -3,6 +3,7 @@ import StatCard from './components/cards/StatCard';
 import { ArrowRight, Bot, CreditCard, FileText, Package, Tags } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDashboardData } from '@/features/dashboard/get-dashboard-data';
+import { CheckoutForm } from '@/lib/types/allegro';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ const Dashboard = () => {
   const { data } = useMe({});
   const { data: dashboardData, isLoading } = useDashboardData({});
   const { t } = useTranslation();
+  const lastOrders: CheckoutForm[] = Array.isArray(dashboardData?.orders?.lastOrders) ? dashboardData!.orders.lastOrders : [];
 
   return (
     <div className='flex flex-col gap-6 w-full'>
@@ -22,7 +24,7 @@ const Dashboard = () => {
             <p className='text-xl font-bold'>{t('dashboard.lastOrders')}</p>
           </div>
           <div className='flex flex-col items-start gap-2.5 w-full h-full'>
-            {dashboardData?.orders.lastOrders.map((order) => (
+            {lastOrders.map((order) => (
               <Link
                 to={`/app/orders/${order.id}`}
                 key={order.id}
@@ -30,7 +32,7 @@ const Dashboard = () => {
               >
                 <div className='flex flex-col items-start'>
                   <p className='text-lg font-semibold'>Order #{order.id.slice(order.id.length - 4, order.id.length).toUpperCase()}</p>
-                  <p className='text-sm text-muted-foreground'>{format(order.updatedAt, 'dd/MM/yyyy, HH:mm')}</p>
+                  <p className='text-sm text-muted-foreground'>{order?.updatedAt ? format(new Date(order.updatedAt), 'dd/MM/yyyy, HH:mm') : ''}</p>
                 </div>
                 <p className='text-2xl font-bold'>
                   {order?.summary?.totalToPay?.amount} {order?.summary?.totalToPay?.currency}
