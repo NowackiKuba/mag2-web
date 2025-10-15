@@ -6,7 +6,7 @@ const envBaseUrl = import.meta.env.VITE_API_URL as string | undefined;
 // Example: https://mag20-be-production.up.railway.app/api/v1
 
 export const api = axios.create({
-  baseURL: envBaseUrl ?? 'http://localhost:3000/api/v1',
+  baseURL: envBaseUrl ?? 'https://mag20-be-production.up.railway.app/api/v1',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
