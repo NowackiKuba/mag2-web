@@ -4,17 +4,20 @@ FROM node:22-alpine AS build
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
+# Enable pnpm via Corepack and prepare version
+RUN corepack enable && corepack prepare pnpm@8.10.2 --activate
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# Copy package.json and pnpm lockfile
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies with pnpm (honor lockfile)
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the application
-RUN yarn build
+RUN pnpm run build
 
 # Production stage
 FROM nginx:alpine AS production
