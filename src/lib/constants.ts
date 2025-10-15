@@ -192,7 +192,7 @@ export const appIntegrations = [
     type: 'link',
     platform: IntegrationPlatform.ALLEGRO,
     description: 'Connect your Allegro account to manage orders and inventory directly from your dashboard',
-    link: `https://allegro.pl/auth/oauth/authorize?response_type=code&client_id=3916151b9e8a49c3987ea9428ff8cf75&redirect_uri=mag2-web-production.up.railway.app/app/integrations/middleware`,
+    link: `https://allegro.pl/auth/oauth/authorize?response_type=code&client_id=3916151b9e8a49c3987ea9428ff8cf75&redirect_uri=https://mag2-web-production.up.railway.app/app/integrations/middleware`,
   },
   {
     id: 2,
