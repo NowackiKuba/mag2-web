@@ -1,10 +1,10 @@
-import { useMe } from '@/features/user/get-me';
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+// import { useMe } from '@/features/user/get-me';
+// import { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {
-  const { data: me, isLoading } = useMe({});
-  const navigate = useNavigate();
+  // const { data: me, isLoading } = useMe({});
+  // const navigate = useNavigate();
   // useEffect(() => {
   //   if (!isLoading && me) {
   //     navigate('/app/dashboard');
