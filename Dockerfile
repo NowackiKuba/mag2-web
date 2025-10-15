@@ -1,7 +1,7 @@
 FROM node:18 AS build
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && corepack prepare pnpm@8.10.2 --activate && pnpm install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@8.10.2 --activate && pnpm install --no-frozen-lockfile
 COPY . .
 RUN pnpm run build
 
