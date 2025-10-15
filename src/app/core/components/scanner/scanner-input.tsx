@@ -7,6 +7,7 @@ interface PersistentFocusInputProps extends React.InputHTMLAttributes<HTMLInputE
 
 const PersistentFocusInput: React.FC<PersistentFocusInputProps> = ({ onInputChange, value, className, placeholder, disabled, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const isUserInteracting = useRef(false);
 
   // Set initial focus
   useEffect(() => {
@@ -15,29 +16,65 @@ const PersistentFocusInput: React.FC<PersistentFocusInputProps> = ({ onInputChan
     }
   }, []);
 
-  // Maintain focus whenever it might be lost
+  // Maintain focus with smarter logic
   useEffect(() => {
     const handleFocusOut = () => {
-      if (inputRef.current) {
-        inputRef.current.focus();
+      // Only refocus if user is not actively interacting with other elements
+      if (!isUserInteracting.current && inputRef.current) {
+        // Small delay to allow other click handlers to process
+        setTimeout(() => {
+          if (
+            document.activeElement?.tagName !== 'BUTTON' &&
+            document.activeElement?.tagName !== 'A' &&
+            !document.activeElement?.closest('[role="dialog"]')?.contains(document.activeElement)
+          ) {
+            inputRef.current?.focus();
+          }
+        }, 100);
       }
     };
 
-    // Continuously check focus status
+    // Track user interactions
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      // Don't interfere with clicks on buttons, links, or interactive elements
+      if (
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'A' ||
+        target.closest('button') ||
+        target.closest('a') ||
+        target.closest('[role="button"]') ||
+        target.closest('[data-radix-collection-item]')
+      ) {
+        isUserInteracting.current = true;
+        setTimeout(() => {
+          isUserInteracting.current = false;
+        }, 500);
+      }
+    };
+
+    // Less aggressive focus checking - only check periodically when not focused
     const intervalId = setInterval(() => {
-      if (document.activeElement !== inputRef.current) {
+      if (
+        !isUserInteracting.current &&
+        document.activeElement !== inputRef.current &&
+        document.activeElement?.tagName !== 'BUTTON' &&
+        document.activeElement?.tagName !== 'A' &&
+        !document.activeElement?.closest('button') &&
+        !document.activeElement?.closest('a')
+      ) {
         inputRef.current?.focus();
       }
-    }, 200);
+    }, 500); // Increased interval to be less aggressive
 
-    // Add global click handler to redirect focus back to input
-    document.addEventListener('click', handleFocusOut);
-    document.addEventListener('focusin', handleFocusOut);
+    // Add event listeners
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('focusout', handleFocusOut);
 
     return () => {
       clearInterval(intervalId);
-      document.removeEventListener('click', handleFocusOut);
-      document.removeEventListener('focusin', handleFocusOut);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('focusout', handleFocusOut);
     };
   }, []);
 

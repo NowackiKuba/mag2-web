@@ -278,30 +278,47 @@ export interface Item {
 interface Summary {
   totalToPay: Amount;
 }
+export interface OrderItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  currency: string;
+}
 
 export interface Order {
   id: string;
-  source: 'ERLI' | 'ALLEGRO' | 'EMPIK';
-  messageToSeller?: string;
-  buyer: Buyer;
-  payment: Payment;
-  status: string;
-  fulfillment: {
-    status: string;
-    shipmentSummary: {
-      lineItemsSent: string;
-    };
+  items: OrderItem[];
+  status: OrderStatus;
+  paymentStatus?: string;
+  paymentProvider: string;
+  paymentId: string;
+  paymentDate: Date;
+  freeDelivery: boolean;
+  delivery: {
+    isFree: boolean;
+    total: number;
+    method: string;
   };
-  delivery: Delivery;
-  //   invoice?: Invoice;
-  items: Item[];
-  //   surcharges?: Surcharge[];
-  //   discounts?: Discount[];
-  //   note?: Note;
-  //   marketplace: Marketplace;
-  summary: Summary;
-  updatedAt: string;
-  revision: string;
+  totalAmount: number;
+  currency: string;
+  invoice: boolean;
+  invoiceData?: {
+    firstName: string;
+    lastName: string;
+    companyName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    nip: string;
+  };
+  buyer: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+  };
 }
 
 export enum OrderStatus {

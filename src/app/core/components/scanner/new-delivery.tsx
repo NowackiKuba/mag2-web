@@ -5,6 +5,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Product } from '@/lib/types/api';
 import { AllegroOffer } from '@/lib/types/allegro';
 import ScannerProductCard from './scanner-product-card';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
 
 const NewDelivery = ({
   products,
@@ -36,6 +38,38 @@ const NewDelivery = ({
   const handleAddToMarketplace = (ean: string, marketplace: string) => {
     // TODO: Implement add to marketplace functionality
     console.log(`Adding ${ean} to ${marketplace}`);
+
+    // For now, show a toast notification
+    toast.info(`Adding ${ean} to ${marketplace}`, {
+      description: 'This feature is coming soon. The product will be added to the marketplace.',
+      duration: 3000,
+    });
+
+    // Remove the EAN from not found list since we're "adding" it
+    setNotFoundEans(
+      (prev) =>
+        prev
+          .map((item) => {
+            if (item.ean === ean) {
+              // Remove this marketplace from notFoundOn and add to foundOn
+              const newNotFoundOn = item.notFoundOn.filter((m) => m !== marketplace);
+              const newFoundOn = [...item.foundOn, marketplace];
+
+              // If no more notFoundOn marketplaces, remove the item entirely
+              if (newNotFoundOn.length === 0) {
+                return null;
+              }
+
+              return {
+                ...item,
+                foundOn: newFoundOn,
+                notFoundOn: newNotFoundOn,
+              };
+            }
+            return item;
+          })
+          .filter(Boolean) as typeof prev
+    );
   };
 
   return (
@@ -83,7 +117,35 @@ const NewDelivery = ({
           ) : (
             <>
               <div className='flex flex-col gap-3 items-start'>
-                <p className='text-xl font-semibold'>Not Found Products (EAN's)</p>
+                <div className='flex items-center justify-between w-full'>
+                  <div className='flex items-center gap-3'>
+                    <p className='text-xl font-semibold'>Not Found Products (EAN's)</p>
+                    {notFoundEans.length > 0 && (
+                      <>
+                        <Badge variant='outline' className='text-xs border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300'>
+                          {notFoundEans.length} items
+                        </Badge>
+                        <Badge variant='outline' className='text-xs border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300'>
+                          {notFoundEans.reduce((sum, item) => sum + item.quantity, 0)} total
+                        </Badge>
+                      </>
+                    )}
+                  </div>
+                  {notFoundEans.length > 0 && (
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      className='h-7 px-3 text-xs font-medium hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 text-red-700 dark:border-red-800 dark:text-red-300'
+                      onClick={() => {
+                        setNotFoundEans([]);
+                        toast.success('Cleared not found EANs list');
+                      }}
+                    >
+                      <X className='h-3 w-3 mr-1' />
+                      Clear All
+                    </Button>
+                  )}
+                </div>
                 <div className='flex flex-col gap-3 items-start w-full'>
                   {notFoundEans.map((ean, index) => (
                     <div

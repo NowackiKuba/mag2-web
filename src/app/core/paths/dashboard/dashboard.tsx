@@ -51,7 +51,7 @@ const Dashboard = () => {
               value={dashboardData?.orders?.todayOrders?.length.toString() ?? '0'}
               showTrend
               trend={dashboardData?.orders?.trend}
-              trendValue={dashboardData?.orders?.trendValue.toFixed(2)}
+              trendValue={dashboardData?.orders?.trendValue?.toFixed(2)}
             />
             <StatCard
               isLoading={isLoading}
@@ -59,11 +59,11 @@ const Dashboard = () => {
               color='indigo'
               icon={CreditCard}
               text={t('dashboard.income')}
-              value={dashboardData?.revenue?.revenueTotal.toFixed(2) ?? '0'}
+              value={dashboardData?.revenue?.revenueTotal?.toFixed(2) ?? '0'}
               valueUnit='PLN'
               showTrend
               trend={dashboardData?.revenue?.trend}
-              trendValue={dashboardData?.revenue?.trendValue.toFixed(2)}
+              trendValue={dashboardData?.revenue?.trendValue?.toFixed(2)}
             />
             <StatCard
               isLoading={isLoading}
@@ -71,7 +71,7 @@ const Dashboard = () => {
               color='purple'
               icon={FileText}
               text={t('dashboard.invoices')}
-              value={dashboardData?.invoices?.length.toString() ?? '0'}
+              value={dashboardData?.invoices?.length?.toString() ?? '0'}
             />
           </div>
           <div className='w-full h-full bg-secondary border border-border rounded-xl shadow-md flex flex-col items-start gap-2 p-5'>

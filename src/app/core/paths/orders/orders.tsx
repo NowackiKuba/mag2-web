@@ -44,7 +44,9 @@ const Orders = () => {
   const [selectedOrderId] = useState<string>('');
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const navigate = useNavigate();
-  // After the first successful load, set isInitialLoadRef to false
+
+  console.log(data);
+
   useEffect(() => {
     if (data && isInitialLoadRef.current) {
       isInitialLoadRef.current = false;
@@ -130,15 +132,13 @@ const Orders = () => {
                 {data?.orders.map((order) => (
                   <TableRow key={order.id} className='h-12' onClick={() => navigate(`./${order.id}`)}>
                     <TableCell className='text-left'>{order.id.slice(0, 4)}...</TableCell>
-                    <TableCell className='flex'>
-                      {order?.fulfillment?.status ? <StatusBadge status={order.fulfillment.status} /> : <StatusBadge status='NEW' />}
-                    </TableCell>
+                    <TableCell className='flex'>{order?.status ? <StatusBadge status={order.status} /> : <StatusBadge status='NEW' />}</TableCell>
                     <TableCell className={`${colorSchemes[MARKETPLACES[order.source].scheme].text}`}>{order?.source}</TableCell>
-                    <TableCell>{order.delivery.method.name}</TableCell>
+                    <TableCell>{order.delivery.method}</TableCell>
                     <TableCell>
-                      {order.summary.totalToPay.amount} {order.summary.totalToPay.currency}
+                      {order.totalAmount} {order.currency}
                     </TableCell>
-                    <TableCell>{format(order.updatedAt, 'dd.MM.yyyy, HH:mm')}</TableCell>
+                    {/* <TableCell>{format(order.updatedAt, 'dd.MM.yyyy, HH:mm')}</TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

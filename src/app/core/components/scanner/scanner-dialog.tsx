@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { ChevronLeft, ListChecks, PackageOpen, Scan, ArrowRight, Zap, Search } from 'lucide-react';
+import { ChevronLeft, ListChecks, PackageOpen, Scan, ArrowRight, Zap, Search, Plus } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
 import PersistentFocusInput from './scanner-input';
@@ -11,11 +11,11 @@ import NewDelivery from './new-delivery';
 import { DialogProps, ScannerProd } from '@/lib/types/common';
 import { getProductsByEan, ScannerResult } from '@/features/products/get-by-eans';
 import { toast } from 'sonner';
+import { useSyncProducts } from '@/features/products/sync-products-stock';
 
 const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   const [action, setAction] = useState<'order' | 'stock' | ''>();
   const inputRef = useRef<HTMLInputElement>(null);
-  // const { warehouseId } = useParams();
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [products, setProducts] = useState<ScannerProd[]>([]);
@@ -28,6 +28,14 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       currentProducts.map((prod) => (prod.product.ean === ean ? { ...prod, quantityScanned: prod.quantityScanned + step } : prod))
     );
   };
+
+  const { mutateAsync: sync, isPending } = useSyncProducts({
+    opts: {
+      override_onSuccess: () => {
+        toast.success('Successfully synced products');
+      },
+    },
+  });
 
   useEffect(() => {
     if (action && inputRef.current) {
@@ -46,6 +54,25 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       }
       setEansList((prev) => [...prev, inputValue]);
       inputRef.current?.focus();
+    }
+  };
+
+  const handleAddToNotFound = (ean: string) => {
+    // Check if EAN is already in the list
+    const existing = notFoundEans.find((item) => item.ean === ean);
+    if (existing) {
+      existing.quantity += 1;
+      setNotFoundEans([...notFoundEans]);
+    } else {
+      setNotFoundEans((prev) => [
+        ...prev,
+        {
+          ean,
+          quantity: 1,
+          foundOn: [],
+          notFoundOn: ['ALLEGRO', 'ERLI'], // Default to all marketplaces
+        },
+      ]);
     }
   };
 
@@ -144,28 +171,19 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
           const quantity = eanScanCounts.get(item.ean) || 0;
           console.log(`Processing not found item for EAN ${item.ean}: scanned ${quantity} times, foundOn=${item.foundOn}, notFoundOn=${item.notFoundOn}`);
 
-          // If this EAN was found on some marketplaces but not others, keep the "not found on" info
-          if (foundEans.has(item.ean)) {
-            // This EAN was found, but might be missing on some marketplaces
-            console.log(`EAN ${item.ean} was found but missing on: ${item.notFoundOn}`);
-            return {
-              ean: item.ean,
-              quantity,
-              foundOn: item.foundOn,
-              notFoundOn: item.notFoundOn,
-            };
-          } else {
-            // This EAN was not found on any marketplace
-            console.log(`EAN ${item.ean} was not found on any marketplace`);
-            return {
-              ean: item.ean,
-              quantity,
-              foundOn: item.foundOn,
-              notFoundOn: item.notFoundOn,
-            };
-          }
+          return {
+            ean: item.ean,
+            quantity,
+            foundOn: item.foundOn,
+            notFoundOn: item.notFoundOn,
+          };
         })
-        .filter((item) => item.notFoundOn.length > 0); // Only keep items that are missing on at least one marketplace
+        .filter((item) => {
+          // Keep items that are either:
+          // 1. Not found on any marketplace (notFoundOn.length > 0 and foundOn.length === 0)
+          // 2. Found on some marketplaces but missing on others (notFoundOn.length > 0)
+          return item.notFoundOn.length > 0;
+        });
 
       console.log('Filtered not found EANs:', notFoundEansList);
 
@@ -188,7 +206,8 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
         });
       }
 
-      failed = notFoundEansList.length;
+      // Calculate total failed quantity (sum of all quantities, not just count of unique EANs)
+      failed = notFoundEansList.reduce((total, item) => total + item.quantity, 0);
     } catch (error) {
       console.log('ERROR', error);
       // If there's an error, treat all EANs as not found
@@ -216,27 +235,37 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
         });
         return combined;
       });
-      failed = eanScanCounts.size;
+      // Calculate total failed quantity in error case
+      failed = notFoundEansList.reduce((total, item) => total + item.quantity, 0);
+
+      // Show error toast
+      toast.error('Failed to search products', {
+        description: 'Some products could not be found. Check the "Not Found" tab for details.',
+        duration: 5000,
+      });
     } finally {
       setIsProcessing(false);
       toast.success('Scanned products', {
-        description: `Found ${succeed} products, failed: ${failed}`,
+        description: `Found ${succeed} unique products, ${failed} items not found`,
         richColors: true,
       });
       setEansList([]);
     }
   };
 
-  const handleSyncAll = () => {
-    // products.forEach((prod) => {
-    //   if (!prod.isSynced) {
-    //     sync({
-    //       ean: prod.product.ean,
-    //       stock: prod.quantityScanned,
-    //       userId: userId!,
-    //     });
-    //   }
-    // });
+  const handleSyncAll = async () => {
+    await Promise.all(
+      products.map(async (prod) => {
+        if (prod.isSynced) {
+          return;
+        }
+        await sync({
+          id: prod.product.externalAllegroId,
+          sources: prod?.sources?.map((src) => src.toString()) ?? [],
+          stock: prod.quantityScanned,
+        });
+      })
+    );
   };
 
   const handleUpdateAll = () => {
@@ -362,7 +391,28 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
                       </div>
                     )}
                   </div>
-                  {eansList.length > 0 && (
+
+                  {/* Manual Add to Not Found Button */}
+                  {inputValue && inputValue.length > 0 && !isProcessing && (
+                    <div className='mt-3 flex items-center gap-2'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => {
+                          handleAddToNotFound(inputValue);
+                          setInputValue('');
+                          toast.success(`Added ${inputValue} to not found list`);
+                        }}
+                        className='text-xs h-8 px-3 border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-300 dark:hover:bg-orange-900/20'
+                      >
+                        <Plus className='h-3 w-3 mr-1' />
+                        Add to Not Found
+                      </Button>
+                      <span className='text-xs text-slate-500 dark:text-slate-400'>If this EAN is not in your system, add it to the not found list</span>
+                    </div>
+                  )}
+                  {/* {eansList.length > 0 && (
                     <div className='mt-4 flex flex-wrap gap-2'>
                       {eansList.slice(-5).map((ean, index) => (
                         <Badge key={index} variant='outline' className='text-xs font-mono'>
@@ -375,7 +425,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
                         </Badge>
                       )}
                     </div>
-                  )}
+                  )} */}
                 </div>
               </Card>
 

@@ -7,6 +7,7 @@ import { X, Package, AlertTriangle, Search, Copy, Download, Plus } from 'lucide-
 import { Product } from '@/lib/types/api';
 import { AllegroOffer } from '@/lib/types/allegro';
 import ScannerProductCard from './scanner-product-card';
+import { toast } from 'sonner';
 
 const StockCheck = ({
   products,
@@ -89,6 +90,38 @@ const StockCheck = ({
   const handleAddToMarketplace = (ean: string, marketplace: string) => {
     // TODO: Implement add to marketplace functionality
     console.log(`Adding ${ean} to ${marketplace}`);
+
+    // For now, show a toast notification
+    toast.info(`Adding ${ean} to ${marketplace}`, {
+      description: 'This feature is coming soon. The product will be added to the marketplace.',
+      duration: 3000,
+    });
+
+    // Remove the EAN from not found list since we're "adding" it
+    setNotFoundEans(
+      (prev) =>
+        prev
+          .map((item) => {
+            if (item.ean === ean) {
+              // Remove this marketplace from notFoundOn and add to foundOn
+              const newNotFoundOn = item.notFoundOn.filter((m) => m !== marketplace);
+              const newFoundOn = [...item.foundOn, marketplace];
+
+              // If no more notFoundOn marketplaces, remove the item entirely
+              if (newNotFoundOn.length === 0) {
+                return null;
+              }
+
+              return {
+                ...item,
+                foundOn: newFoundOn,
+                notFoundOn: newNotFoundOn,
+              };
+            }
+            return item;
+          })
+          .filter(Boolean) as typeof prev
+    );
   };
 
   return (
@@ -179,9 +212,14 @@ const StockCheck = ({
                   <h3 className='text-lg font-semibold text-slate-900 dark:text-slate-100'>Unrecognized EANs</h3>
                   <div className='flex items-center gap-3'>
                     {hasNotFoundEans && (
-                      <Badge variant='outline' className='text-xs border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300'>
-                        {notFoundEans.length} items
-                      </Badge>
+                      <>
+                        <Badge variant='outline' className='text-xs border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300'>
+                          {notFoundEans.length} items
+                        </Badge>
+                        <Badge variant='outline' className='text-xs border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300'>
+                          {notFoundEans.reduce((sum, item) => sum + item.quantity, 0)} total
+                        </Badge>
+                      </>
                     )}
                     <div className='flex items-center gap-2'>
                       <Button
@@ -203,6 +241,19 @@ const StockCheck = ({
                       >
                         <Download className='h-3 w-3 mr-1' />
                         Download TXT
+                      </Button>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        className='h-7 px-3 text-xs font-medium hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 text-red-700 dark:border-red-800 dark:text-red-300'
+                        onClick={() => {
+                          setNotFoundEans([]);
+                          toast.success('Cleared not found EANs list');
+                        }}
+                        disabled={!hasNotFoundEans}
+                      >
+                        <X className='h-3 w-3 mr-1' />
+                        Clear All
                       </Button>
                     </div>
                   </div>
