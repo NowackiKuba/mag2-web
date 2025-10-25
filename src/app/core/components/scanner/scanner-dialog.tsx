@@ -161,7 +161,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
 
       // Get all found EANs to filter out from not found list
       const foundEans = new Set(uniqueProducts.map((p) => p.product.ean));
-      // console.log('Found EANs:', Array.from(foundEans)); // Debug log removed
+      console.log('Found EANs:', Array.from(foundEans)); // Debug log removed
       // console.log('Original not found EANs from backend:', result.notFoundEans); // Debug log removed
 
       // Process not found EANs with marketplace information
