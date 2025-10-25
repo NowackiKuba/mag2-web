@@ -256,7 +256,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   const handleSyncAll = async () => {
     await Promise.all(
       products.map(async (prod) => {
-        console.log('PRODUCT OT SYNC');
+        console.log('PRODUCT OT SYNC: ', prod);
         if (prod.isSynced) {
           return;
         }
