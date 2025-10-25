@@ -33,6 +33,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     opts: {
       override_onSuccess: (data) => {
         toast.success('Successfully synced products');
+        // Remove the synced product from the list
         setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
       },
     },
@@ -255,19 +256,21 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   };
 
   const handleSyncAll = async () => {
-    await Promise.all(
-      products.map(async (prod) => {
-        console.log('PRODUCT OT SYNC: ', prod);
-        if (prod.isSynced) {
-          return;
-        }
+    const productsToSync = products.filter((prod) => !prod.isSynced);
+
+    for (const prod of productsToSync) {
+      console.log('PRODUCT TO SYNC: ', prod);
+      try {
         await sync({
           id: prod.product.externalAllegroId ?? prod.product.externalErliId,
           sources: prod?.sources?.map((src) => src.toString()) ?? [],
           stock: prod.quantityScanned,
         });
-      })
-    );
+      } catch (error) {
+        console.error('Failed to sync product:', prod.product.ean, error);
+        toast.error(`Failed to sync product ${prod.product.ean}`);
+      }
+    }
   };
 
   const handleUpdateAll = () => {
