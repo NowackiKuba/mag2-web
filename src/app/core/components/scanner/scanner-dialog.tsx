@@ -261,7 +261,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
           return;
         }
         await sync({
-          id: prod.product.externalAllegroId,
+          id: prod.product.externalAllegroId ?? prod.product.externalErliId,
           sources: prod?.sources?.map((src) => src.toString()) ?? [],
           stock: prod.quantityScanned,
         });
