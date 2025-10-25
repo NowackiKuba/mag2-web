@@ -31,8 +31,9 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
 
   const { mutateAsync: sync } = useSyncProducts({
     opts: {
-      override_onSuccess: () => {
+      override_onSuccess: (data) => {
         toast.success('Successfully synced products');
+        setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
       },
     },
   });
