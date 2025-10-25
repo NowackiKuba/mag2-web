@@ -45,7 +45,7 @@ const Orders = () => {
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  console.log(data);
+  // console.log(data); // Debug log removed
 
   useEffect(() => {
     if (data && isInitialLoadRef.current) {
@@ -53,7 +53,7 @@ const Orders = () => {
     }
   }, [data]);
 
-  console.log(data);
+  // console.log(data); // Debug log removed
 
   if (isLoading) {
     return (

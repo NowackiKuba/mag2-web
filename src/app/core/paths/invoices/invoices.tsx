@@ -12,7 +12,7 @@ const Invoices = () => {
     opts: {},
   });
 
-  console.log(data);
+  // console.log(data); // Debug log removed
   const { t } = useTranslation();
   return (
     <div className='flex flex-col gap-8 w-full h-full'>

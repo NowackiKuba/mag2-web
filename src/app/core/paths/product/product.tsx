@@ -19,7 +19,7 @@ const Product = () => {
   });
   const [openCreate, setOpenCreate] = useState<boolean>(false);
 
-  console.log(data);
+  // console.log(data); // Debug log removed
   if (isLoading) {
     return (
       <div className='flex flex-col items-center justify-start h-full w-full'>

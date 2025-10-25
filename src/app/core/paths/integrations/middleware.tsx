@@ -33,7 +33,7 @@ const IntegrationMiddleware = () => {
         };
         await integrate(payload);
       } catch (error) {
-        console.log(error);
+        console.error(error); // Changed to error level
         return;
       }
     };

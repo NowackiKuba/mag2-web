@@ -89,7 +89,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       eansList.forEach((ean) => {
         eanScanCounts.set(ean, (eanScanCounts.get(ean) || 0) + 1);
       });
-      console.log('EAN scan counts:', Object.fromEntries(eanScanCounts));
+      // console.log('EAN scan counts:', Object.fromEntries(eanScanCounts)); // Debug log removed
 
       // Process found products - group by EAN to avoid duplicates
       const productsByEan = new Map<string, ScannerProd>();
@@ -107,7 +107,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       productsByEanFromBackend.forEach((products, ean) => {
         // Get the actual scan count for this EAN
         const quantityScanned = eanScanCounts.get(ean) || 0;
-        console.log(`EAN ${ean}: scanned ${quantityScanned} times, found ${products.length} products`);
+        // console.log(`EAN ${ean}: scanned ${quantityScanned} times, found ${products.length} products`); // Debug log removed
 
         // Use the first product as the base, but collect all sources
         const baseProduct = products[0];
@@ -123,7 +123,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
 
       // Convert map to array
       const uniqueProducts = Array.from(productsByEan.values());
-      console.log('Unique products after processing:', uniqueProducts);
+      // console.log('Unique products after processing:', uniqueProducts); // Debug log removed
 
       setProducts((prev) => {
         // Merge with existing products, combining quantities for same EANs
@@ -161,15 +161,15 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
 
       // Get all found EANs to filter out from not found list
       const foundEans = new Set(uniqueProducts.map((p) => p.product.ean));
-      console.log('Found EANs:', Array.from(foundEans));
-      console.log('Original not found EANs from backend:', result.notFoundEans);
+      // console.log('Found EANs:', Array.from(foundEans)); // Debug log removed
+      // console.log('Original not found EANs from backend:', result.notFoundEans); // Debug log removed
 
       // Process not found EANs with marketplace information
       const notFoundEansList = result.notFoundEans
         .map((item) => {
           // Get the actual scan count for this EAN
           const quantity = eanScanCounts.get(item.ean) || 0;
-          console.log(`Processing not found item for EAN ${item.ean}: scanned ${quantity} times, foundOn=${item.foundOn}, notFoundOn=${item.notFoundOn}`);
+          // console.log(`Processing not found item for EAN ${item.ean}: scanned ${quantity} times, foundOn=${item.foundOn}, notFoundOn=${item.notFoundOn}`); // Debug log removed
 
           return {
             ean: item.ean,
@@ -185,7 +185,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
           return item.notFoundOn.length > 0;
         });
 
-      console.log('Filtered not found EANs:', notFoundEansList);
+      // console.log('Filtered not found EANs:', notFoundEansList); // Debug log removed
 
       // Add not found EANs to state
       if (notFoundEansList.length > 0) {
@@ -209,7 +209,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       // Calculate total failed quantity (sum of all quantities, not just count of unique EANs)
       failed = notFoundEansList.reduce((total, item) => total + item.quantity, 0);
     } catch (error) {
-      console.log('ERROR', error);
+      console.error('ERROR', error); // Changed to error level
       // If there's an error, treat all EANs as not found
       const eanScanCounts = new Map<string, number>();
       eansList.forEach((ean) => {
@@ -256,6 +256,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   const handleSyncAll = async () => {
     await Promise.all(
       products.map(async (prod) => {
+        console.log('PRODUCT OT SYNC');
         if (prod.isSynced) {
           return;
         }

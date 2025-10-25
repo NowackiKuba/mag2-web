@@ -14,7 +14,7 @@ const OfferDetailsDialog = ({ open, setOpen, id }: DialogDetailsProps) => {
     },
   });
   const { t } = useTranslation();
-  console.log(data);
+  // console.log(data); // Debug log removed
   return (
     <Dialog
       open={open}

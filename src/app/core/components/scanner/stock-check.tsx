@@ -89,7 +89,7 @@ const StockCheck = ({
 
   const handleAddToMarketplace = (ean: string, marketplace: string) => {
     // TODO: Implement add to marketplace functionality
-    console.log(`Adding ${ean} to ${marketplace}`);
+    // console.log(`Adding ${ean} to ${marketplace}`); // Debug log removed
 
     // For now, show a toast notification
     toast.info(`Adding ${ean} to ${marketplace}`, {

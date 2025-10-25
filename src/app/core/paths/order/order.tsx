@@ -14,7 +14,7 @@ const Order = () => {
     },
   });
 
-  console.log(order);
+  // console.log(order); // Debug log removed
   const [showBuyerDetails, setShowBuyerDetails] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 

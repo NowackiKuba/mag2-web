@@ -32,12 +32,12 @@ const NewDelivery = ({
   handleSearchAll: () => void;
   updateProductStock: (ean: string, step: number) => void;
 }) => {
-  console.log(products);
+  // console.log(products); // Debug log removed
   const [actionView, setActionView] = useState<'not_found_eans' | 'found_products'>('found_products');
 
   const handleAddToMarketplace = (ean: string, marketplace: string) => {
     // TODO: Implement add to marketplace functionality
-    console.log(`Adding ${ean} to ${marketplace}`);
+    // console.log(`Adding ${ean} to ${marketplace}`); // Debug log removed
 
     // For now, show a toast notification
     toast.info(`Adding ${ean} to ${marketplace}`, {

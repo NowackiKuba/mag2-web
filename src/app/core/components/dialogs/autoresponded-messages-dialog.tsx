@@ -10,7 +10,7 @@ const AutorespondedMessagesDialog = () => {
     queryFn: () => getAutorespondedThreads(),
   });
 
-  console.log(threads);
+  // console.log(threads); // Debug log removed
   return (
     <Dialog>
       <DialogTrigger>

@@ -41,7 +41,7 @@ const ScannerProductCard = ({
     },
   });
 
-  console.log(prod.product);
+  // console.log(prod.product); // Debug log removed
 
   return (
     <div className='bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 p-6'>
