@@ -12,6 +12,7 @@ import { DialogProps, ScannerProd } from '@/lib/types/common';
 import { getProductsByEan, ScannerResult } from '@/features/products/get-by-eans';
 import { toast } from 'sonner';
 import { useSyncProducts } from '@/features/products/sync-products-stock';
+import { useUpdateProducts } from '@/features/products/update-product';
 
 const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   const [action, setAction] = useState<'order' | 'stock' | ''>();
@@ -33,6 +34,16 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     opts: {
       override_onSuccess: (data) => {
         toast.success('Successfully synced products');
+        // Remove the synced product from the list
+        setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
+      },
+    },
+  });
+
+  const { mutateAsync: update } = useUpdateProducts({
+    opts: {
+      override_onSuccess: (data) => {
+        toast.success('Successfully updated products');
         // Remove the synced product from the list
         setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
       },
@@ -274,15 +285,15 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
   };
 
   const handleUpdateAll = () => {
-    // products.forEach((prod) => {
-    //   if (!prod.isSynced) {
-    //     update({
-    //       ean: prod.product.ean,
-    //       stock: prod.quantityScanned,
-    //       userId: userId!,
-    //     });
-    //   }
-    // });
+    products.forEach((prod) => {
+      if (!prod.isSynced) {
+        update({
+          id: prod.product.externalAllegroId ?? prod.product.externalErliId,
+          stock: prod.quantityScanned,
+          sources: prod?.sources?.map((src) => src.toString()) ?? [],
+        });
+      }
+    });
   };
 
   useEffect(() => {
