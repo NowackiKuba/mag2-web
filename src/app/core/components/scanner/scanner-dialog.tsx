@@ -34,20 +34,13 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     opts: {
       override_onSuccess: (data) => {
         toast.success('Successfully synced products');
+        console.log('DATA');
         setProducts((prev) => prev.filter((p) => p.product.ean !== data.ean));
       },
     },
   });
 
-  const { mutateAsync: update } = useUpdateProducts({
-    opts: {
-      override_onSuccess: (data) => {
-        toast.success('Successfully updated products');
-        // Remove the synced product from the list
-        setProducts((prev) => prev.filter((p) => p.product?.ean !== data.ean));
-      },
-    },
-  });
+  const { mutateAsync: update } = useUpdateProducts({ opts: {} });
 
   console.log('PRODS: ', products);
 
@@ -284,16 +277,23 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     }
   };
 
-  const handleUpdateAll = () => {
-    products.forEach((prod) => {
-      if (!prod.isSynced) {
-        update({
-          id: prod.product.externalAllegroId ?? prod.product.externalErliId,
+  const handleUpdateAll = async () => {
+    for (const prod of products) {
+      if (prod.isSynced) continue;
+      const id = prod.product.externalAllegroId ?? prod.product.externalErliId;
+      try {
+        await update({
+          id,
           stock: prod.quantityScanned,
           sources: prod?.sources?.map((src) => src.toString()) ?? [],
         });
+        toast.success('Successfully updated products');
+        setProducts((prev) => prev.filter((p) => (p.product.externalAllegroId ?? p.product.externalErliId) !== id));
+      } catch (error) {
+        console.error('Failed to update product:', prod.product.ean, error);
+        toast.error(`Failed to update product ${prod.product.ean}`);
       }
-    });
+    }
   };
 
   useEffect(() => {
