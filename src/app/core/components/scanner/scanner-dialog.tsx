@@ -34,8 +34,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     opts: {
       override_onSuccess: (data) => {
         toast.success('Successfully synced products');
-        // Remove the synced product from the list
-        setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
+        setProducts((prev) => prev.filter((p) => p.product.ean !== data.ean));
       },
     },
   });
@@ -45,10 +44,12 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
       override_onSuccess: (data) => {
         toast.success('Successfully updated products');
         // Remove the synced product from the list
-        setProducts((prev) => prev.filter((p) => p.product?.id !== data.id));
+        setProducts((prev) => prev.filter((p) => p.product?.ean !== data.ean));
       },
     },
   });
+
+  console.log('PRODS: ', products);
 
   useEffect(() => {
     if (action && inputRef.current) {
@@ -270,7 +271,6 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     const productsToSync = products.filter((prod) => !prod.isSynced);
 
     for (const prod of productsToSync) {
-      console.log('PRODUCT TO SYNC: ', prod);
       try {
         await sync({
           id: prod.product.externalAllegroId ?? prod.product.externalErliId,
