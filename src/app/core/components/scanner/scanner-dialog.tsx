@@ -34,7 +34,7 @@ const ScannerDialog: React.FC<DialogProps> = ({ open, setOpen }) => {
     opts: {
       override_onSuccess: (data) => {
         toast.success('Successfully synced products');
-        console.log('DATA');
+        console.log('DATA: ', data);
         setProducts((prev) => prev.filter((p) => p.product.ean !== data.ean));
       },
     },
