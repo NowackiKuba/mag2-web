@@ -315,6 +315,18 @@ export const automationsActions = [
     scheme: 'purple',
     tags: ['messages'],
   },
+  {
+    id: 6,
+    name: 'Stock Synchronizer',
+    description: 'Automatically synchronize product stock levels across all connected sales channels to prevent overselling and ensure inventory accuracy',
+    icon: Bot,
+    action: AutomationAction.STOCK_ORCHESTRATOR,
+    translationKey: 'automations.actions.stockOrchestrator',
+    isBeta: true,
+    isNew: true,
+    scheme: 'blue',
+    tags: ['marketplace'],
+  },
 ];
 
 export const currencies = [
