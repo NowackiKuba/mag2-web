@@ -320,7 +320,7 @@ export const automationsActions = [
     name: 'Stock Synchronizer',
     description: 'Automatically synchronize product stock levels across all connected sales channels to prevent overselling and ensure inventory accuracy',
     icon: Bot,
-    action: AutomationAction.STOCK_ORCHESTRATOR,
+    action: AutomationAction.ORCHESTRATOR,
     translationKey: 'automations.actions.stockOrchestrator',
     isBeta: true,
     isNew: true,
