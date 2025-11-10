@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useUserIntegrations } from '@/features/user/get-user-integrations';
 import { useState } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useNavigate } from 'react-router-dom';
 import CreateIntegrationDialog from './components/dialogs/create-integration-dialog';
 
 const Integrations = () => {
